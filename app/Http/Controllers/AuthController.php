@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -15,24 +14,19 @@ class AuthController extends Controller
     {
         // Validation des données
         $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'telephone' => 'required|string|max:20',
         ]);
 
-        // Génération du code de confirmation
-        $confirmation_code = Str::random(6);
+        // Génération du code de confirmation (6 chiffres)
+        $confirmation_code = random_int(100000, 999999);
 
         // Création de l'utilisateur
         $user = User::create([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
+            'username' => $request->username,
             'email' => $request->email,
-            'password' => Hash::make($request->mot_de_passe),
-            'telephone' => $request->telephone,
-            'role' => 'stagiaire',
+            'password' => Hash::make($request->password),
             'confirmation_code' => $confirmation_code,
             'is_confirmed' => false,
         ]);
@@ -54,7 +48,7 @@ class AuthController extends Controller
         // Validation des données
         $request->validate([
             'email' => 'required|string|email',
-            'confirmation_code' => 'required|string',
+            'confirmation_code' => 'required|integer|digits:6',
         ]);
 
         // Vérification du code de confirmation
@@ -102,5 +96,4 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Déconnexion réussie.']);
     }
-
 }

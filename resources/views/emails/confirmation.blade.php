@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Bonjour,</h1>
-    <p>Merci pour votre inscription. Pour confirmer votre compte, veuillez saisir le code suivant sur notre plateforme :</p>
+    <p>Merci pour votre inscription. Pour confirmer votre compte, veuillez saisir le code suivant sur notre application :</p>
     <p><strong>Code de confirmation : {{ $code }}</strong></p>
     <p>Si vous n'avez pas initié cette demande, vous pouvez ignorer cet email.</p>
     <p>Cordialement,</p>
